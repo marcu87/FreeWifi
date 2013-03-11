@@ -35,7 +35,7 @@ public class WifiReceiver extends BroadcastReceiver {
 	    default:
 	        break;
 	    }
-	    Log.v(TAG, "onReceive Broadcast > WiFiState: " + wifiStateText);
-	    Log.v(TAG, "onReceive Broadcast > Time: " + new Date());
+	    Log.v(TAG, "onReceive Broadcast >>> WiFiState: " + wifiStateText);
+	    Log.v(TAG, "onReceive Broadcast >>> Time: " + new Date());
 	}
 }
