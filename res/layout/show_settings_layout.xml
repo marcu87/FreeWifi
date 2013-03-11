@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent" 
+              android:layout_height="fill_parent" 
+              android:orientation="vertical" >
+    
+    <Button android:id="@+id/button"
+        	android:onClick="buttonHola"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connect now!" />
+    
+    <Button android:id="@+id/buttonForgetNet"
+        	android:onClick="buttonForgetNetwork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forget Network" />
+</LinearLayout>
