@@ -21,6 +21,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -40,7 +41,7 @@ public class WifiReceiver extends BroadcastReceiver {
         
         if(currentNetworkInfo.isConnected() )
         {
-        	Log.v(TAG, "ON > "+ currentNetworkInfo.getReason() + " < Extra info > "+ currentNetworkInfo.getExtraInfo()  + " < STATE > " + currentNetworkInfo.getDetailedState() );
+        	Log.v(TAG, "ON > "+ currentNetworkInfo.getReason() + " < Extra info > "+ currentNetworkInfo.getExtraInfo()  + " < STATE > " + currentNetworkInfo.getDetailedState() + " < AVAILABLE? > " + currentNetworkInfo.isAvailable() );
         
         	// getting the id of the freeWifi 
         	SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext() );
@@ -65,30 +66,9 @@ public class WifiReceiver extends BroadcastReceiver {
     		    
     		    // *************************
     		    // and now I'll try to login:
-    		    //         		
-        		String server = "https://wifi.free.fr/Auth";
-        		
-        		HttpClient httpclient = new DefaultHttpClient();
-        		HttpPost httppost = new HttpPost(server);
-
-        		try {
-        			// Add your data
-        			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-        			nameValuePairs.add(new BasicNameValuePair("login", userName));
-        			nameValuePairs.add(new BasicNameValuePair("password", userPass));
-        			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-        			try {
-        				httpclient.execute(httppost);
-        			} catch (UnsupportedEncodingException e) {
-        				e.printStackTrace();
-        			}
-
-
-        		} catch (IOException e) {
-        			// TODO Auto-generated catch block
-        			Log.i("HTTP Failed", e.toString());
-        		}
+    		    //
+    		    postData post = new postData(context);
+    		    post.execute();
         	}
         	
         	// check if there are saved a wifiID
@@ -117,5 +97,56 @@ public class WifiReceiver extends BroadcastReceiver {
         }
 
     }
+    
+
+
+    private class postData extends AsyncTask<String, Void, String> 
+    {
+    	private Context mContext;
+    	
+        public postData (Context context) {
+            mContext = context;
+        }
+    	
+    	@Override
+    	protected String doInBackground(String... params) {
+    		// perform long running operation operation
+
+    		SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext() );
+    		
+    		String userName = sharedPrefs.getString("auth_username", "");
+    		String userPass = sharedPrefs.getString("auth_password", "");
+    		
+    		String server = "https://wifi.free.fr/Auth";
+    		
+    		HttpClient httpclient = new DefaultHttpClient();
+    		HttpPost httppost = new HttpPost(server);
+
+    		try {
+    			// Add your data
+    			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+    			nameValuePairs.add(new BasicNameValuePair("login", userName));
+    			nameValuePairs.add(new BasicNameValuePair("password", userPass));
+    			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+    			try {
+    				httpclient.execute(httppost);
+    			} catch (UnsupportedEncodingException e) {
+    				e.printStackTrace();
+    			}
+
+
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			Log.i("HTTP Failed", e.toString());
+    		}    		
+    		
+    		return null;
+    	}
+
+  
+    }
+    
+    
     
 }
