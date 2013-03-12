@@ -35,7 +35,7 @@ public class WifiReceiver extends BroadcastReceiver {
         boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
         String reason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
         boolean isFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
-
+        
         NetworkInfo currentNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
         NetworkInfo otherNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
         
@@ -48,6 +48,8 @@ public class WifiReceiver extends BroadcastReceiver {
         	Integer freeWifiNetworkID = sharedPrefs.getInt("freeWifiNetworkID", 0);
     		String userName = sharedPrefs.getString("auth_username", "");
     		String userPass = sharedPrefs.getString("auth_password", "");
+    		Boolean networkAutoForget = sharedPrefs.getBoolean("auto_forget", false);
+    		Boolean networkAutoLogin = sharedPrefs.getBoolean("auto_login", true);
         	
         	// the "reasons" of the connection
         	String connectionReason = currentNetworkInfo.getReason();
@@ -67,8 +69,12 @@ public class WifiReceiver extends BroadcastReceiver {
     		    // *************************
     		    // and now I'll try to login:
     		    //
-    		    postData post = new postData(context);
-    		    post.execute();
+    		    if (networkAutoLogin == true )
+    		    {
+	    		    postData post = new postData(context);
+	    		    post.execute();
+    		    }
+
         	}
         	
         	// check if there are saved a wifiID
@@ -77,11 +83,15 @@ public class WifiReceiver extends BroadcastReceiver {
     				(connectionReason != null && connectionReason.equals("dataEnabled")) ) 
     			)
         	{
+        		
             	// removing from the know networks
-        		WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-            	wifiMgr.removeNetwork(freeWifiNetworkID);
-            	wifiMgr.saveConfiguration();
-
+        		if (networkAutoForget == true )
+        		{
+	        		WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+	            	wifiMgr.removeNetwork(freeWifiNetworkID);
+	            	wifiMgr.saveConfiguration();
+        		}
+	            	
             	// deleting the freeWifiId
     			Editor pName = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
     		    pName.putInt("freeWifiNetworkID", 0);

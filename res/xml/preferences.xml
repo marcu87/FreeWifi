@@ -10,18 +10,43 @@
 			android:key="auth_username"
 			android:title="Username" 
 			android:dialogTitle="Username"
-			android:dialogMessage="Set your FreeWIFI username"	
+			android:dialogMessage="Set your FreeWIFI username:"	
 			android:defaultValue=""
+			android:summary="Set your FreeWifi login"
 			android:singleLine="true" />
 		
 		<EditTextPreference
 			android:key="auth_password"
 			android:title="Password" 
 			android:dialogTitle="Password"
-			android:dialogMessage="Set your FreeWIFI password"	
+			android:dialogMessage="Set your FreeWIFI password:"
+			android:summary="Set your FreeWIFI password"	
 			android:defaultValue=""
 			android:singleLine="true" />
 			
 	</PreferenceCategory>
+
+	<PreferenceCategory 
+		android:title="Connectivity"
+		android:key="second_category">	
+		
+		<CheckBoxPreference
+	          android:title="Auto forget network"
+	          android:defaultValue="true"
+	          android:summary="Forgets the FreeWifi network when connection is lost, it won't try to reconnect automatically"
+	          android:key="auto_forget" />
+
+	</PreferenceCategory>
 	
+	<PreferenceCategory 
+		android:title="DEVELOPER OPTIONS"
+		android:key="third_category">	
+		
+		<CheckBoxPreference
+	          android:title="Auto login"
+	          android:defaultValue="true"
+	          android:key="auto_login" />
+
+	</PreferenceCategory>
+		
 </PreferenceScreen>
