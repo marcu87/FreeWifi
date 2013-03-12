@@ -131,6 +131,7 @@ public class WifiReceiver extends BroadcastReceiver {
 
     			try {
     				httpclient.execute(httppost);
+    				Log.v(TAG, "LOGIN-ING" );
     			} catch (UnsupportedEncodingException e) {
     				e.printStackTrace();
     			}
