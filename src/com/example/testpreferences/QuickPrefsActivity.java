@@ -73,15 +73,19 @@ public class QuickPrefsActivity extends Activity {
     	SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext() );
     	Integer freeWifiNetworkID = sharedPrefs.getInt("freeWifiNetworkID", 0);
     	
-    	WifiManager wifiMgr = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-    	wifiMgr.removeNetwork(freeWifiNetworkID);
-    	wifiMgr.saveConfiguration();
-    	
+    	// if there are a network to remove:
+    	if (freeWifiNetworkID != 0)
+    	{
+	    	WifiManager wifiMgr = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+	    	wifiMgr.removeNetwork(freeWifiNetworkID);
+	    	wifiMgr.saveConfiguration();
+    	}
+
 		Toast toast = Toast.makeText(getApplicationContext(), "FreeWifi was deleted from your networks", 10000);
 		toast.show();
     }
     
-    public void buttonHola(View v) 
+    public void buttonConnect(View v) 
     {   
     	if (this.checkIfUserHasSetteduserAndPassword() == false ) return;
     	
