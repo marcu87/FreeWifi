@@ -95,7 +95,7 @@ public class QuickPrefsActivity extends Activity {
 
     	if (mWifi.isConnected() ) {
 
-    		if (nameWifi.equals("\"FreeWifi\"") )
+    		if (nameWifi != null && nameWifi.equals("\"FreeWifi\"") )
     		{
     			Editor pName = PreferenceManager
     		            .getDefaultSharedPreferences(getApplicationContext())
