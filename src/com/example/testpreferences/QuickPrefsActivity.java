@@ -187,7 +187,7 @@ public class QuickPrefsActivity extends Activity {
     	protected void onPreExecute() {
     		// Things to be done before execution of long running operation. For example showing ProgessDialog
     		
-    		dialog.setCancelable(false);
+    		dialog.setCancelable(true);
     		dialog.show();
     	}
     	
@@ -200,7 +200,7 @@ public class QuickPrefsActivity extends Activity {
     		// hide the loading:
     		dialog.dismiss();
     		
-    		Toast toast = Toast.makeText(getApplicationContext(), "You are connected :-)", 10000);
+    		Toast toast = Toast.makeText(getApplicationContext(), "You are connected :-)", 3000);
     		toast.show();
     	}
 
