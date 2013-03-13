@@ -103,7 +103,7 @@ public class QuickPrefsActivity extends Activity {
 
     	if (mWifi.isConnected() ) {
 
-    		if (nameWifi != null && nameWifi.equals("\"FreeWifi\"") )
+    		if (nameWifi != null && ( nameWifi.equals("\"FreeWifi\"") || nameWifi.equalsIgnoreCase("freewifi") )  )
     		{
     			Editor pName = PreferenceManager
     		            .getDefaultSharedPreferences(getApplicationContext())
@@ -115,7 +115,7 @@ public class QuickPrefsActivity extends Activity {
     		}
     		else
     		{
-    			new AlertDialog.Builder(this).setTitle("LOL").setMessage("You are not connected to FreeWifi").setNeutralButton("Close", null).show();
+    			new AlertDialog.Builder(this).setTitle("LOL").setMessage("You are not connected to FreeWifi ("+ nameWifi +")").setNeutralButton("Close", null).show();
     		}
 
     	}
