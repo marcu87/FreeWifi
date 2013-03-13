@@ -56,7 +56,7 @@ public class WifiReceiver extends BroadcastReceiver {
         	String connectionNetworkName = currentNetworkInfo.getExtraInfo(); 
         	
         	// if it connects to FreeWifi stores the wifiID
-        	if (connectionNetworkName != null && connectionNetworkName.equals("\"FreeWifi\"") )
+    		if (connectionNetworkName != null && ( connectionNetworkName.equals("\"FreeWifi\"") || connectionNetworkName.equalsIgnoreCase("freewifi") )  )
         	{
             	WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
             	WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
