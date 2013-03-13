@@ -24,6 +24,7 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 public class WifiReceiver extends BroadcastReceiver {
 	
@@ -31,14 +32,14 @@ public class WifiReceiver extends BroadcastReceiver {
 	
     public void onReceive(Context context, Intent intent) 
     {
-    	
+
         boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
         String reason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
         boolean isFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
-        
+
         NetworkInfo currentNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
         NetworkInfo otherNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
-        
+
         if(currentNetworkInfo.isConnected() )
         {
         	Log.v(TAG, "ON > "+ currentNetworkInfo.getReason() + " < Extra info > "+ currentNetworkInfo.getExtraInfo()  + " < STATE > " + currentNetworkInfo.getDetailedState() + " < AVAILABLE? > " + currentNetworkInfo.isAvailable() );
@@ -46,8 +47,6 @@ public class WifiReceiver extends BroadcastReceiver {
         	// getting the id of the freeWifi 
         	SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext() );
         	Integer freeWifiNetworkID = sharedPrefs.getInt("freeWifiNetworkID", 0);
-    		String userName = sharedPrefs.getString("auth_username", "");
-    		String userPass = sharedPrefs.getString("auth_password", "");
     		Boolean networkAutoForget = sharedPrefs.getBoolean("auto_forget", false);
     		Boolean networkAutoLogin = sharedPrefs.getBoolean("auto_login", true);
         	
@@ -69,28 +68,34 @@ public class WifiReceiver extends BroadcastReceiver {
     		    // *************************
     		    // and now I'll try to login:
     		    //
-    		    if (networkAutoLogin == true )
+    		    if (networkAutoLogin == true)
     		    {
 	    		    postData post = new postData(context);
 	    		    post.execute();
+	    		    
+    	    		Toast toast = Toast.makeText(context.getApplicationContext(), "LOGIN-ING", Toast.LENGTH_LONG);
+    	    		toast.show();
     		    }
 
         	}
         	
         	// check if there are saved a wifiID
         	// and the network is not FreeWifi 
-        	if ( freeWifiNetworkID != 0 && ( (connectionNetworkName != null && !connectionNetworkName.equals("\"FreeWifi\"")) || 
+        	if ( freeWifiNetworkID != 0 && ( (connectionNetworkName != null && (!connectionNetworkName.equals("\"FreeWifi\"") && !connectionNetworkName.equalsIgnoreCase("freewifi") )  ) || 
     				(connectionReason != null && connectionReason.equals("dataEnabled")) ) 
     			)
         	{
         		
             	// removing from the know networks
-        		if (networkAutoForget == true )
+        		if (networkAutoForget == true)
         		{
 	        		WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 	            	wifiMgr.removeNetwork(freeWifiNetworkID);
 	            	wifiMgr.saveConfiguration();
         		}
+        		
+	    		Toast toast = Toast.makeText(context.getApplicationContext(), "DELETED FREEWIFI NETWORK", Toast.LENGTH_LONG);
+	    		toast.show();
 	            	
             	// deleting the freeWifiId
     			Editor pName = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
@@ -142,6 +147,7 @@ public class WifiReceiver extends BroadcastReceiver {
     			try {
     				httpclient.execute(httppost);
     				Log.v(TAG, "LOGIN-ING" );
+    				
     			} catch (UnsupportedEncodingException e) {
     				e.printStackTrace();
     			}

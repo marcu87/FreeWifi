@@ -56,7 +56,8 @@ public class QuickPrefsActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	menu.add(Menu.NONE, 0, 0, "Settings");
+    	menu.add(Menu.NONE, 0, Menu.NONE, "Settings");
+    	menu.add(Menu.NONE, 1, Menu.NONE, "Saved Settings");
     	return super.onCreateOptionsMenu(menu);
     }
 
@@ -65,6 +66,9 @@ public class QuickPrefsActivity extends Activity {
     	switch (item.getItemId()) {
     		case 0:
     			startActivity(new Intent(this, ShowSettingsActivity.class));
+    			return true;
+    		case 1:
+    			startActivity(new Intent(this, DisplaySettingsActivity.class));
     			return true;
     	}
     	return false;
@@ -200,7 +204,7 @@ public class QuickPrefsActivity extends Activity {
     		// hide the loading:
     		dialog.dismiss();
     		
-    		Toast toast = Toast.makeText(getApplicationContext(), "You are connected :-)", 3000);
+    		Toast toast = Toast.makeText(getApplicationContext(), "You are connected :-)", Toast.LENGTH_LONG);
     		toast.show();
     	}
 
