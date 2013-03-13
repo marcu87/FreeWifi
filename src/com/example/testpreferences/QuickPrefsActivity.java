@@ -26,6 +26,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -88,6 +89,9 @@ public class QuickPrefsActivity extends Activity {
     public void buttonConnect(View v) 
     {   
     	if (this.checkIfUserHasSetteduserAndPassword() == false ) return;
+    	
+    	Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+    	vibrator.vibrate(100);
     	
     	ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
     	NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
