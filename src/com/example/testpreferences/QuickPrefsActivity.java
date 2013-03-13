@@ -94,9 +94,6 @@ public class QuickPrefsActivity extends Activity {
     {   
     	if (this.checkIfUserHasSetteduserAndPassword() == false ) return;
     	
-    	Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-    	vibrator.vibrate(100);
-    	
     	ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
     	NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
     	

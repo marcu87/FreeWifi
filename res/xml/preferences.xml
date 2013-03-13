@@ -36,17 +36,12 @@
 	          android:summary="Forgets the FreeWifi network when connection is lost, it won't try to reconnect automatically"
 	          android:key="auto_forget" />
 
-	</PreferenceCategory>
-	
-	<PreferenceCategory 
-		android:title="DEVELOPER OPTIONS"
-		android:key="third_category">	
-		
 		<CheckBoxPreference
 	          android:title="Auto login"
 	          android:defaultValue="true"
+	          android:summary="Automatic login when FreeWifi is connected"
 	          android:key="auto_login" />
-
+		
 	</PreferenceCategory>
 		
 </PreferenceScreen>
